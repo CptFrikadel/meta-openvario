@@ -9,13 +9,18 @@ SECTION = "base/app"
 DEPENDS = "\
 	ncurses \
 "
-SRC_URI = "git://github.com/CptFrikadel/igc-loginator.git;protocol=git \
-"
+
+PR = "r0"
+
+S = "${WORKDIR}/git"
+
+SRC_URI = "git://github.com/CptFrikadel/igc-loginator.git;protocol=git "
 
 do_compile() {
 	echo "Making.."
 	echo '${WORKDIR}'
-	cd $WORKDIR/git
+	cd ${WORKDIR}/git
+	make clean
 	make
 }
 
@@ -23,3 +28,7 @@ do_install() {
 	install -d ${D}/opt/bin
 	install -m 0755 ${S}/logbook ${D}/opt/bin
 }
+
+PACKAGES = "${PN}"
+INHIBIT_PACKAGE_DEBUG_SPLIT = '1'
+FILES_${PN} = "/opt/bin/logbook"
