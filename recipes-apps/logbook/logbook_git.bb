@@ -20,6 +20,7 @@ SRCREV_pn-logbook = "${AUTOREV}"
 
 SRC_URI = "git://github.com/CptFrikadel/igc-loginator.git;protocol=git "
 
+addtask do_package_write_ipk after do_package after do_install
 
 do_compile() {
 	echo "Making.."
