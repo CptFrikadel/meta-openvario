@@ -183,6 +183,7 @@ function submenu_xcsoar_lang() {
 
 		# update config
 		sed -i 's/^XCSOAR_LANG=.*/XCSOAR_LANG='$menuitem'/' /opt/conf/ov-xcsoar.conf
+		sync
 		dialog --msgbox "New Setting saved !!\n A Reboot is required !!!" 10 50	
 	else
 		dialog --backtitle "OpenVario" \
@@ -261,6 +262,7 @@ function update_system() {
 	response=$?
 	case $response in
 		0) opkg upgrade &>/tmp/tail.$$
+		sync
 		dialog --backtitle "OpenVario" --title "Result" --tailbox /tmp/tail.$$ 30 50
 		;;
 	esac
@@ -298,16 +300,15 @@ function calibrate_sensors() {
 		esac
 		echo "Please run sensorcal again !!!" > /tmp/tail.$$
 	fi
+	sync
 	dialog --backtitle "OpenVario" --title "Result" --tailbox /tmp/tail.$$ 30 50
 	systemctl start sensord
 }
 
 function calibrate_touch() {
 	echo "Calibrating Touch ..." >> /tmp/tail.$$
-	# reset touch calibration
-	# uboot rotation
-	ts_calibrate -r $(cat /sys/class/graphics/fbcon/rotate)
-	dialog --msgbox "Calibration OK !!\nPlease reboot to apply !!" 10 50
+	/usr/bin/ov-calibrate-ts.sh >> /tmp/tail.$$
+	dialog --msgbox "Calibration OK!" 10 50
 }
 
 # Copy /usb/usbstick/openvario/maps to /home/root/.xcsoar
@@ -346,6 +347,7 @@ function start_xcsoar() {
 	else
 		LANG=$XCSOAR_LANG /opt/XCSoar/bin/xcsoar -fly -640x480
 	fi
+	sync
 }
 
 function start_logbook(){
