@@ -21,6 +21,7 @@ do
 	--begin 3 4 \
 	--menu "You can use the UP/DOWN arrow keys" 15 50 6 \
 	XCSoar   "Start XCSoar" \
+	Logbook "Open logbook" \
 	File   "Copys file to and from OpenVario" \
 	System   "Update, Settings, ..." \
 	Exit   "Exit to the shell" \
@@ -32,6 +33,7 @@ do
 	# make decsion 
 case $menuitem in
 	XCSoar) start_xcsoar;;
+	Logbook) start_logbook;;
 	File) submenu_file;;
 	System) submenu_system;;
 	Exit) yesno_exit;;
@@ -343,6 +345,10 @@ function start_xcsoar() {
 	else
 		LANG=$XCSOAR_LANG /opt/XCSoar/bin/xcsoar -fly -1024x600; 
 	fi
+}
+
+function start_logbook(){
+	/opt/bin/logbook /home/root/.xcsoar/logs/*.igc
 }
 
 function yesno_exit(){
